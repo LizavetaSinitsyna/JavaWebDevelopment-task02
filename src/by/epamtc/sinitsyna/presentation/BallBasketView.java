@@ -28,7 +28,7 @@ public class BallBasketView {
 					System.out.printf("%d) Мяч не задан.\n", pointer);
 				} else {
 					System.out.printf("%d) Мяч массой %d г, цвет \"%s\" в количестве %d шт.\n", pointer,
-							ball.getWeight(), ball.getColor(), separateBallAmount == null ? 0 : element.getValue());
+							ball.getWeight(), ball.getColor(), separateBallAmount == null ? 0 : separateBallAmount);
 				}
 
 			}
