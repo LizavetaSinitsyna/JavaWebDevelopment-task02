@@ -13,11 +13,17 @@ import by.epamtc.sinitsyna.bean.BallBasket;
 
 public class BallBasketLogic {
 	public BigInteger retrieveAllBallsWeight(BallBasket basket) {
-		BigInteger generalWeight = new BigInteger("0");
+		Ball ball;
+		Integer ballAmount;
 		long separateBallWeight;
+		BigInteger generalWeight = new BigInteger("0");
+
 		if (basket != null) {
 			for (Map.Entry<Ball, Integer> element : basket.getBalls().entrySet()) {
-				separateBallWeight = (long) element.getKey().getWeight() * element.getValue();
+				ball = element.getKey();
+				ballAmount = element.getValue();
+				separateBallWeight = (long) ((ball == null) ? 0 : ball.getWeight())
+						* (ballAmount == null ? 0 : ballAmount);
 				generalWeight = generalWeight.add(new BigInteger(Long.toString(separateBallWeight)));
 			}
 		}
@@ -25,14 +31,20 @@ public class BallBasketLogic {
 	}
 
 	public BigInteger retrieveBallsAmountByColor(BallBasket basket, String color) {
-		BigInteger amount = new BigInteger("0");
+		Ball ball;
+		Integer separateBallAmount;
+		BigInteger generalAmount = new BigInteger("0");
+
 		if (basket != null) {
 			for (Map.Entry<Ball, Integer> element : basket.getBalls().entrySet()) {
-				if (element.getKey().getColor().equals(color)) {
-					amount = amount.add(new BigInteger(element.getValue().toString()));
+				ball = element.getKey();
+				if (ball != null && ball.getColor().equals(color)) {
+					separateBallAmount = element.getValue();
+					generalAmount = generalAmount
+							.add(new BigInteger(separateBallAmount == null ? "0" : separateBallAmount.toString()));
 				}
 			}
 		}
-		return amount;
+		return generalAmount;
 	}
 }

@@ -23,7 +23,8 @@ public class BallBasket implements Serializable {
 	}
 
 	public BallBasket(Map<Ball, Integer> balls) {
-		setBalls(balls);
+		replaceNullBallAmountByIntValue(balls);
+		this.balls = balls;
 	}
 
 	public Iterator<Entry<Ball, Integer>> getBallsIterator() {
@@ -35,11 +36,7 @@ public class BallBasket implements Serializable {
 	}
 
 	public void setBalls(Map<Ball, Integer> balls) {
-		for (Map.Entry<Ball, Integer> element : balls.entrySet()) {
-			if (element.getValue() == null) {
-				element.setValue(0);
-			}
-		}
+		replaceNullBallAmountByIntValue(balls);
 		this.balls = balls;
 	}
 
@@ -61,6 +58,14 @@ public class BallBasket implements Serializable {
 			return true;
 		}
 		return false;
+	}
+
+	private void replaceNullBallAmountByIntValue(Map<Ball, Integer> balls) {
+		for (Map.Entry<Ball, Integer> element : balls.entrySet()) {
+			if (element.getValue() == null) {
+				element.setValue(0);
+			}
+		}
 	}
 
 	@Override
