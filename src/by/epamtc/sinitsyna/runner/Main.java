@@ -9,6 +9,7 @@ import java.math.BigInteger;
 
 import by.epamtc.sinitsyna.bean.BallBasket;
 import by.epamtc.sinitsyna.exception.NonPositiveException;
+import by.epamtc.sinitsyna.exception.NullBasketException;
 import by.epamtc.sinitsyna.input.UserDataInput;
 import by.epamtc.sinitsyna.logic.BallBasketLogic;
 import by.epamtc.sinitsyna.presentation.BallBasketView;
@@ -43,7 +44,7 @@ public class Main {
 			ballsAmount = logic.retrieveBallsAmountByColor(basket, color);
 			System.out.printf("Количество мячиков с цветом \"%s\" в корзине равно %d шт.\n", color, ballsAmount);
 
-		} catch (NonPositiveException e) {
+		} catch (NonPositiveException | NullBasketException e) {
 			System.out.println(e.getMessage());
 		}
 

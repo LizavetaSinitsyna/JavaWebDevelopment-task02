@@ -9,10 +9,11 @@ import java.util.Map;
 
 import by.epamtc.sinitsyna.bean.Ball;
 import by.epamtc.sinitsyna.bean.BallBasket;
+import by.epamtc.sinitsyna.validation.ValidationHelper;
 
 public class BallBasketView {
 	public void printBasketContent(BallBasket basket) {
-		if (basket == null || basket.getBalls().size() == 0) {
+		if (ValidationHelper.isNull(basket) || basket.isEmpty()) {
 			System.out.println("Корзина пуста.");
 		} else {
 			Ball ball;
@@ -24,7 +25,7 @@ public class BallBasketView {
 				++pointer;
 				ball = element.getKey();
 				separateBallAmount = element.getValue();
-				if (ball == null) {
+				if (ValidationHelper.isNull(ball)) {
 					System.out.printf("%d) Мяч не задан.\n", pointer);
 				} else {
 					System.out.printf("%d) Мяч массой %d г, цвет \"%s\" в количестве %d шт.\n", pointer,

@@ -7,10 +7,12 @@ package by.epamtc.sinitsyna.bean;
 
 import java.io.Serializable;
 import java.util.Collections;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import by.epamtc.sinitsyna.validation.ValidationHelper;
 
 public class BallBasket implements Serializable {
 
@@ -19,12 +21,11 @@ public class BallBasket implements Serializable {
 	private Map<Ball, Integer> balls;
 
 	public BallBasket() {
-		balls = new Hashtable<>();
+		balls = new HashMap<>();
 	}
 
 	public BallBasket(Map<Ball, Integer> balls) {
-		replaceNullBallAmountByIntValue(balls);
-		this.balls = balls;
+		this.balls = retrieveMapCopy(balls);
 	}
 
 	public Iterator<Entry<Ball, Integer>> getBallsIterator() {
@@ -36,16 +37,23 @@ public class BallBasket implements Serializable {
 	}
 
 	public void setBalls(Map<Ball, Integer> balls) {
-		replaceNullBallAmountByIntValue(balls);
-		this.balls = balls;
+		this.balls = retrieveMapCopy(balls);
 	}
 
-	public void addBall(Ball ball, int ballsAmount) {
+	public boolean addBall(Ball ball) {
+		return addBall(ball, 1);
+	}
+
+	public boolean addBall(Ball ball, int ballsAmount) {
+		if (ValidationHelper.isNull(ball) || ballsAmount < 0) {
+			return false;
+		}
 		if (balls.containsKey(ball)) {
 			balls.put(ball, balls.get(ball) + ballsAmount);
 		} else {
 			balls.put(ball, ballsAmount);
 		}
+		return true;
 	}
 
 	public boolean removeBall(Ball ball) {
@@ -60,12 +68,25 @@ public class BallBasket implements Serializable {
 		return false;
 	}
 
-	private void replaceNullBallAmountByIntValue(Map<Ball, Integer> balls) {
+	public boolean isEmpty() {
+		return balls.size() == 0;
+	}
+
+	private Map<Ball, Integer> retrieveMapCopy(Map<Ball, Integer> balls) {
+		Map<Ball, Integer> copy = new HashMap<>();
+		if (balls == null) {
+			return copy;
+		}
+		Ball key;
+		Integer amount;
 		for (Map.Entry<Ball, Integer> element : balls.entrySet()) {
-			if (element.getValue() == null) {
-				element.setValue(0);
+			key = element.getKey();
+			amount = element.getValue();
+			if (key != null) {
+				copy.put(key, amount == null ? 0 : amount);
 			}
 		}
+		return copy;
 	}
 
 	@Override

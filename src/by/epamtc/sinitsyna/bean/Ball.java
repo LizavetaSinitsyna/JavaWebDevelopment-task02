@@ -7,6 +7,8 @@ package by.epamtc.sinitsyna.bean;
 
 import java.io.Serializable;
 
+import by.epamtc.sinitsyna.exception.NonPositiveException;
+
 public class Ball implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -18,7 +20,10 @@ public class Ball implements Serializable {
 		weight = 1;
 	}
 
-	public Ball(int weight, String color) {
+	public Ball(int weight, String color) throws NonPositiveException {
+		if (!checkWeightValidation(weight)) {
+			throw new NonPositiveException("Ball weight can't be less than 1.");
+		}
 		this.weight = weight;
 		this.color = color;
 	}
@@ -27,8 +32,12 @@ public class Ball implements Serializable {
 		return weight;
 	}
 
-	public void setWeight(int weight) {
+	public boolean setWeight(int weight) {
+		if (!checkWeightValidation(weight)) {
+			return false;
+		}
 		this.weight = weight;
+		return true;
 	}
 
 	public String getColor() {
@@ -40,6 +49,13 @@ public class Ball implements Serializable {
 
 	public void setColor(String color) {
 		this.color = color;
+	}
+
+	private boolean checkWeightValidation(int weight) {
+		if (weight < 1) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override
